@@ -1,21 +1,29 @@
 defmodule SaleReport.Core.SaleFactory do
   alias SaleReport.Core.Sale
 
-  def csv_row_to_sale(csv_row) do
-    csv_row
-    |> String.split(",")
-    |> split_column_to_sale()
+  def csv_row_to_sale(row) do
+    case String.split(row, ",") do
+
+      [product, quantity_str, price_str] ->
+        build_sale(product, quantity_str, price_str)
+      _other ->
+        {:error, :invalid_row_format, row}
+    end
   end
 
-  defp split_column_to_sale([product, quantity, price]) do
+  # Função auxiliar privada para a construção
+  defp build_sale(product, quantity_str, price_str) do
+    # Em um projeto real, você poderia usar uma estrutura `with` aqui
+    # para lidar com falhas na conversão de string para número.
+    # Por enquanto, vamos manter simples.
     sale = %Sale{
-      product: product,
-      quantity: quantity |> String.to_integer(),
-      price: price |> String.to_float()
+      product: String.trim(product),
+      quantity: String.to_integer(String.trim(quantity_str)),
+      price: String.to_float(String.trim(price_str))
     }
-
     {:ok, sale}
+  rescue
+    # Se String.to_integer ou String.to_float falhar
+    ArgumentError -> {:error, :invalid_number_format, "#{quantity_str},#{price_str}"}
   end
-
-  defp split_column_to_sale(_), do: {:error, "Unable to convert row to sale"}
 end

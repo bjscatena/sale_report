@@ -7,7 +7,7 @@ defmodule SaleReport do
       CSVReader.read(file)
       |> get_content()
       |> String.split("\r\n")
-      |> Enum.map(&SaleFactory.csv_row_to_sale(&1))
+      |> Enum.map(&SaleFactory.csv_row_to_sale/1)
       |> Enum.flat_map(fn
         {:ok, sale} -> [sale]
         {:error, _} -> []
