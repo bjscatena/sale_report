@@ -40,7 +40,7 @@ Para executar este projeto, você precisará ter o Elixir e o Erlang instalados.
 
 1.  **Clone o repositório:**
     ```bash
-    git clone [https://github.com/seu-usuario/sale_report.git](https://github.com/seu-usuario/sale_report.git)
+    git clone https://github.com/bjscatena/sale_report.git
     cd sale_report
     ```
 
